@@ -7,11 +7,17 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +26,7 @@ public class JwtUtil {
     @Value("${jwt.key}")
     private String jwtKey;
 
-    private Key key; // 처음엔 비워두고 ✨
+    private Key key;
     private final long expirationTime = 3600000;
 
     @jakarta.annotation.PostConstruct
@@ -50,7 +56,7 @@ public class JwtUtil {
                 .verifyWith((SecretKey) key)
                 .build()
                 .parseSignedClaims(token)
-                .getPayload(); // 전체 클레임 보석함을 가져와요 ✨
+                .getPayload();
     }
 
     public String getNickname(String token) {
@@ -78,5 +84,21 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public Authentication getAuthentication(String token) {
+        Claims claims = getClaims(token);
+
+        String email = claims.get("email", String.class);
+        String role = claims.get("role", String.class);
+        if (role == null || role.isEmpty()) {
+            role = "ROLE_USER";
+        }
+        List<SimpleGrantedAuthority> authorities =
+                Collections.singletonList(new SimpleGrantedAuthority(role));
+
+        User principal = new User(email, "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 }
