@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+</head>
+<body>
+
+<div th:if="${isLoggedIn}">
+    <h1 th:text="${message}">환영합니다!</h1>
+    <button id="logoutBtn">로그아웃</button>
+</div>
+
+<div th:unless="${isLoggedIn}">
+    <p>로그인이 필요합니다. <a href="/login">로그인하러 가기</a></p>
+</div>
+
+</body>
+<script th:inline="javascript">
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            fetch('/api/login/logout', {
+                method: 'POST'
+            })
+                .then(res => {
+                    if (res.ok) {
+                        alert("로그아웃 되었습니다.");
+                        location.href = "/login"; // 메인으로 가면 컨트롤러가 다시 로그인 페이지로 보냄
+                    }
+                })
+                .catch(err => console.error("로그아웃 실패:", err));
+        });
+    }
+</script>
+</html>
