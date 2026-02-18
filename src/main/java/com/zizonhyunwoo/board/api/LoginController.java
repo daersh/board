@@ -36,16 +36,10 @@ public class LoginController {
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword()))
             throw new IllegalArgumentException("비밀번호 틀림");
 
-        String token = jwtUtil.createToken(user);
-        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
-                .httpOnly(true)    // 자바스크립트 접근 방지
-                .secure(false)     // HTTPS에서만 전송 (로컬 테스트시 false, 배포시 true)
-                .path("/")         // 모든 경로에서 쿠키 사용
-                .maxAge(3600)      // 쿠키 유효 시간 (초 단위, 예: 1시간)
-                .sameSite("Strict") // CSRF 공격 방지
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        response.addHeader(
+                HttpHeaders.SET_COOKIE,
+                CreateCookie("accessToken",jwtUtil.createToken(user),3600).toString()
+        );
 
         return ResponseEntity.ok().build();
     }
@@ -55,17 +49,22 @@ public class LoginController {
     public ResponseEntity<Void> logout(HttpServletResponse response) {
         log.info("Logout Request: 쿠키 삭제를 요청합니다.");
 
-        // 기존 쿠키와 동일한 설정(이름, 경로 등)을 가지고 만료 시간만 0으로 설정합니다.
-        ResponseCookie cookie = ResponseCookie.from("accessToken", null)
-                .httpOnly(true)
-                .secure(false) // 배포 시 true로 변경 권장
-                .path("/")
-                .maxAge(0)     // 핵심: 즉시 만료
-                .sameSite("Strict")
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        // 기존 쿠키와 동일한 설정(이름, 경로 등)을 가지고 만료 시간만 0으로 설정
+        response.addHeader(
+                HttpHeaders.SET_COOKIE,
+                CreateCookie("accessToken",null,0).toString()
+        );
 
         return ResponseEntity.ok().build();
+    }
+
+    private ResponseCookie CreateCookie(String name, String token,int maxAge){
+        return ResponseCookie.from(name, token)
+                .httpOnly(true)
+                .secure(false)          // 배포 시 true로 변경
+                .path("/")
+                .maxAge(maxAge)         //
+                .sameSite("Strict")     // csrf
+                .build();
     }
 }
