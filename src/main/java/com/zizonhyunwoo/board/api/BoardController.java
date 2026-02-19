@@ -1,36 +1,29 @@
 package com.zizonhyunwoo.board.api;
 
-import com.zizonhyunwoo.board.dao.BoardRepository;
-import com.zizonhyunwoo.board.dao.UserRepository;
-import com.zizonhyunwoo.board.model.BoardEntity;
-import com.zizonhyunwoo.board.model.UserEntity;
+import com.zizonhyunwoo.board.request.BoardRequest;
+import com.zizonhyunwoo.board.response.BoardResponse;
+import com.zizonhyunwoo.board.service.IBoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import java.util.List;
 
 
 @RestController
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
 public class BoardController {
-    private final BoardRepository boardRepository;
-    private final UserRepository userRepository;
+    private final IBoardService boardService;
 
     @GetMapping("")
-    public Page<BoardEntity> findAll(@RequestParam  int page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
-        return boardRepository.findAll(pageable);
+    public ResponseEntity<List<BoardResponse>> findAll(@RequestParam  int page) {
+        return ResponseEntity.ok(boardService.getBoard(page));
     }
 
     @PostMapping("")
-    public BoardEntity save(@RequestBody BoardEntity boardEntity) {
-        Optional<UserEntity> user =userRepository.findById(boardEntity.getUser().getId());
-        return boardRepository.save(boardEntity);
+    public ResponseEntity<String> save(@RequestBody BoardRequest.CreateRequest request) {
+        boardService.save(request);
+        return ResponseEntity.ok("Saved");
     }
 
 }
