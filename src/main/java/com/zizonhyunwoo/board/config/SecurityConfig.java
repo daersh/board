@@ -39,7 +39,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/board/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                // JWT 필터 배치
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

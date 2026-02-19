@@ -89,16 +89,14 @@ public class JwtUtil {
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
 
-        String email = claims.get("email", String.class);
+        String userId = claims.get("userId", String.class);
         String role = claims.get("role", String.class);
         if (role == null || role.isEmpty()) {
-            role = "ROLE_USER";
+            role = "USER";
         }
         List<SimpleGrantedAuthority> authorities =
-                Collections.singletonList(new SimpleGrantedAuthority(role));
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
 
-        User principal = new User(email, "", authorities);
-
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(userId, null, authorities);
     }
 }
