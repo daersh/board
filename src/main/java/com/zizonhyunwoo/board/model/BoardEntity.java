@@ -3,6 +3,7 @@ package com.zizonhyunwoo.board.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +26,11 @@ public class BoardEntity extends TimeEntity {
     @Column
     private int reportCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_uuid")
+    private List<BoardCmtEntity> boardCmts;
 }

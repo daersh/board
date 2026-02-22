@@ -3,11 +3,12 @@ package com.zizonhyunwoo.board.service;
 
 import com.zizonhyunwoo.board.request.BoardRequest;
 import com.zizonhyunwoo.board.response.BoardResponse;
-
-import java.util.List;
+import com.zizonhyunwoo.board.response.PageResponse;
 
 public interface IBoardService {
-    List<BoardResponse> getBoard(int page);
+    PageResponse<BoardResponse> getBoards(int page);
 
-    void save(BoardRequest.CreateRequest request);
+    void save(BoardRequest.Create request);
+
+    BoardResponse getBoardById(String boardId);
 }
