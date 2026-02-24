@@ -1,7 +1,6 @@
 package com.zizonhyunwoo.board.api;
 
 import com.zizonhyunwoo.board.config.UserPrincipal;
-import com.zizonhyunwoo.board.dao.UserRepository;
 import com.zizonhyunwoo.board.model.UserEntity;
 import com.zizonhyunwoo.board.request.UserRequest;
 import com.zizonhyunwoo.board.response.PageResponse;
@@ -10,10 +9,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

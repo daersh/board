@@ -34,9 +34,9 @@ public class UserService {
 
     public ResponseEntity<UserEntity> info(@AuthenticationPrincipal UserPrincipal user) {
         System.out.println(user);
-        UUID email = user.getEmail();
+        UUID id = user.getUserId();
 
-        return userRepository.findById(email)
+        return userRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
