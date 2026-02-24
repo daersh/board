@@ -6,6 +6,7 @@ import com.zizonhyunwoo.board.model.UserEntity;
 import com.zizonhyunwoo.board.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +30,7 @@ public class LoginController {
 
     @PostMapping("")
     @Transactional
-    public ResponseEntity<Void> login(@RequestBody LoginRequest dto, HttpServletResponse response) {
+    public ResponseEntity<Void> login(@RequestBody@Valid LoginRequest dto, HttpServletResponse response) {
         log.info("Login Request: {}", dto);
         UserEntity user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자"));
@@ -60,11 +61,11 @@ public class LoginController {
 
     private ResponseCookie CreateCookie(String name, String token,int maxAge){
         return ResponseCookie.from(name, token)
-                .httpOnly(true)
-                .secure(false)          // 배포 시 true로 변경
+                .httpOnly(true)         // js에서 읽기 불가 http 요청에서만 쿠키를 담을 수 있다
+                .secure(false)          // HTTPS(보안 연결)에서만 쿠키를 보낼지 결정
                 .path("/")
-                .maxAge(maxAge)         //
-                .sameSite("Strict")     // csrf
+                .maxAge(maxAge)
+                .sameSite("Lax")     // csrf
                 .build();
     }
 }
