@@ -21,7 +21,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
           script: |
-            // 1. PR의 변경된 코드(diff) 가져오기
             const { data: diff_text } = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -29,30 +28,27 @@ jobs:
               headers: { accept: 'application/vnd.github.v3.diff' }
             });
 
-            // 2. Gemini API 호출하기
             const apiKey = process.env.GEMINI_API_KEY;
             const prompt = `당신은 시니어 소프트웨어 개발자입니다. 다음은 깃허브 PR의 코드 변경사항(diff)입니다. 이를 분석해서 버그, 보안 취약점, 가독성 개선 등에 대한 코드 리뷰를 한국어로 작성해주세요.\n\n${diff_text}`;
             
-            const gemini_url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            // 💡 이 부분이 gemini-2.5-flash 로 수정되었습니다!
+            const gemini_url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
             
             const gemini_response = await fetch(gemini_url, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }]
-              })
+              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
             
             const result = await gemini_response.json();
             
             if (!result.candidates) {
               console.log(result);
-              throw new Error("Gemini API 응답을 받지 못했습니다. API 키나 할당량을 확인하세요.");
+              throw new Error("Gemini API 응답 에러: " + JSON.stringify(result));
             }
 
             const review_comment = result.candidates[0].content.parts[0].text;
 
-            // 3. PR에 리뷰 댓글 달기
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
