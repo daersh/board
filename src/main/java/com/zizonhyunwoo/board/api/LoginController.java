@@ -28,6 +28,7 @@ public class LoginController {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
+// 로그인
     @PostMapping("")
     @Transactional
     public ResponseEntity<Void> login(@RequestBody@Valid LoginRequest dto, HttpServletResponse response) {
