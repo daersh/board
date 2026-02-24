@@ -15,7 +15,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/api/board")
+@RequestMapping("/api/board") 
 @RequiredArgsConstructor
 public class BoardController {
     private final IBoardService boardService;
