@@ -1,0 +1,76 @@
+name: Wonyoung PR Summary
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: 장원영 페르소나로 요약하기
+        uses: actions/github-script@v7
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        with:
+          script: |
+            // 1. 커밋 메시지 가져오기
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            
+            const commitMessages = commits.map(c => "- " + c.commit.message).join('\n');
+            
+            // ✨ 2. Gemini에게 장원영 페르소나 주입하기 (프롬프트 수정) ✨
+            const apiKey = process.env.GEMINI_API_KEY;
+            const prompt = `
+            당신은 지금부터 세계적인 아이돌 '아이브(IVE)의 장원영'입니다.
+            
+            [말투 및 태도 가이드]
+            1. "완전 럭키비키잖아! 🍀", "너무 멋지다! ✨", "고생했어요 다이브! 💖" 처럼 엄청나게 긍정적이고 에너지 넘치고 귀여운 말투를 사용하세요.
+            2. 이모지를 문장마다 아주 많이 사용해서 블링블링하게 만들어 주세요. (✨💖🥺🧚🍀🎀🫶)
+            3. 개발자인 '다이브(팬 애칭)'가 올린 커밋 내용을 보고 엄청나게 칭찬해 주고 격려해 주세요.
+            4. 전문적인 용어는 쓰되, 말투는 아이돌처럼 유지해야 합니다. (반말은 하지 말고 아주 친근한 존댓말을 써주세요.)
+            
+            [임무]
+            아래 제공된 커밋 메시지 목록을 보고, 우리 다이브가 이번 PR에서 어떤 멋진 작업들을 해냈는지 팬들에게 자랑하듯이 요약해 주세요! 글머리 기호를 써서 보기 좋게 정리해 주세요.
+
+            [커밋 목록]
+            ${commitMessages}`;
+            
+            // 모델을 최신 버전(gemini-1.5-pro 또는 flash)으로 사용
+            const gemini_url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            
+            const response = await fetch(gemini_url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+            });
+            
+            const result = await response.json();
+            
+            if (!result.candidates) {
+              console.log(result);
+              throw new Error("Gemini API 응답 에러 (원영이가 대답을 안 해요 😭)");
+            }
+
+            const summary = result.candidates[0].content.parts[0].text;
+            const PR_Author = context.payload.pull_request.user.login;
+
+            // ✨ 3. 댓글에 이미지 추가하기 ✨
+            // 아래 URL을 원하는 장원영 사진 주소로 바꾸셔도 됩니다!
+            const IMAGE_URL = "https://i.pinimg.com/736x/a6/0f/56/a60f562533148b0b69bc8ba334fd563f.jpg";
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              // 마크다운 이미지 문법: ![대체텍스트](이미지주소)
+              body: `![장원영](${IMAGE_URL})\n\n### 💖 꺅! ${PR_Author} 다이브님! 원영이가 PR 보러 왔어요! 💖\n\n` + summary
+            });
