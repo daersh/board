@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
 
 
 @RestController
@@ -44,4 +45,9 @@ public class BoardController {
         return ResponseEntity.ok("Updated");
     }
 
+    @DeleteMapping("{boardId}")
+    public ResponseEntity<String> delete(@PathVariable UUID boardId) {
+        boardService.delete(boardId);
+        return ResponseEntity.ok("Deleted");
+    }
 }

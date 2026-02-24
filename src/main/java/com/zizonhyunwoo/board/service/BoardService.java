@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.json.JsonMapper;
 
 import java.util.UUID;
 
@@ -27,11 +26,10 @@ public class BoardService implements IBoardService {
     private final BoardRepository boardRepository;
     private final BoardCmtRepository boardCmtRepository;
     private final UserRepository userRepository;
-    private final JsonMapper.Builder builder;
 
     public PageResponse<BoardResponse> getBoards(int page){
         Pageable pageable = PageRequest.of(page, 10);
-        Page<BoardResponse> boardEntities = boardRepository.findAll(pageable).map(BoardResponse::new);
+        Page<BoardResponse> boardEntities = boardRepository.findAllByStatus(0,pageable).map(BoardResponse::new);
         return PageResponse.of(boardEntities);
     }
 
@@ -66,6 +64,14 @@ public class BoardService implements IBoardService {
         }
 
         board.update(request.getTitle(), request.getContent());
+    }
+
+    @Transactional
+    @Override
+    public void delete(UUID boardId) {
+        BoardEntity board = boardRepository.getReferenceById(boardId);
+        board.delete();
+
     }
 
 }

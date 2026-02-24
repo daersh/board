@@ -38,4 +38,8 @@ public class BoardEntity extends TimeEntity {
         this.title = title;
         this.content = content;
     }
+
+    public void delete() {
+        this.status = 1;
+    }
 }
