@@ -20,16 +20,13 @@ public class MainController {
             @CookieValue(name = "accessToken", required = false) String token,
             Model model) {
 
-        // 1. 토큰이 없으면 로그인 페이지로 리다이렉트
-        if (token == null || token.isEmpty()) {
-            return "redirect:/login-page"; // 실제 로그인 페이지 경로로 수정하세요
+        if (token == null || token.isEmpty() || !jwtUtil.validateToken(token)) {
+            System.out.println("invalid token");
+            return "redirect:/login";
         }
+        System.out.println("valid token");
 
-         jwtUtil.validateToken(token);
-
-        // 3. 환영 메시지 전달
         model.addAttribute("isLoggedIn", true);
-        model.addAttribute("message", "환영합니다! 회원님.");
         return "index";
     }
 }

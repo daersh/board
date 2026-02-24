@@ -3,41 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <title>Main Page</title>
+    <style>
+        /* ⬛️ 기본 다크 테마 설정 */
+        body {
+            font-family: 'Pretendard', 'Impact', sans-serif; /* 좀 더 강한 폰트 느낌 */
+            padding: 20px;
+            background-color: #121212; /* 아주 어두운 배경 */
+            color: #e0e0e0; /* 기본 글자색: 밝은 회색 */
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2H0v-2h20v-2H0V8h20V6H0V4h20V2H0V0h22v20h2V0h2v20h2V0h2v20h2V0h2v20h2v2.5H20zM0 20h2v20H0V20zm4 0h2v20H4V20zm4 0h2v20H8V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20zm4 0h2v20h-2V20z' fill='%231a1a1a' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E"); /* 거친 패턴 추가 */
+        }
+
+        /* 📦 컨테이너박스: 각지고 단단하게 */
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: #1e1e1e; /* 어두운 회색 배경 */
+            padding: 30px;
+            border: 2px solid #333; /* 두꺼운 테두리 */
+            border-radius: 0; /* 둥근 모서리 제거! 칼각 유지 */
+            box-shadow: 5px 5px 0px #000; /* 거친 그림자 효과 */
+        }
+
+        /* 🎯 제목 Header */
+        h2 {
+            color: #ff5722; /* 강렬한 오렌지색 포인트 */
+            text-align: left;
+            text-transform: uppercase; /* 대문자로 강하게 */
+            font-weight: 900; /* 아주 두껍게 */
+            letter-spacing: 1px;
+            border-bottom: 3px solid #ff5722;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* 🖱️ 버튼 스타일 (공통) */
+        button, .btn, .btn-write, .btn-list, .btn-save, .btn-cancel {
+            display: inline-block;
+            padding: 12px 24px;
+            background: transparent; /* 배경 투명 */
+            color: #ff5722; /* 글자색 오렌지 */
+            border: 2px solid #ff5722; /* 테두리 오렌지 */
+            border-radius: 0 !important; /* 칼각 */
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* 버튼 호버 효과: 색상 반전 및 네온 효과 */
+        button:hover, .btn:hover, .btn-write:hover, .btn-list:hover, .btn-save:hover, .btn-cancel:hover {
+            background: #ff5722;
+            color: #000;
+            box-shadow: 0 0 10px #ff5722; /* 오렌지색 네온 글로우 */
+        }
+
+        /* 취소 버튼은 약간 다르게 (파란색 포인트) */
+        .btn-cancel {
+            color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-cancel:hover {
+            background: #007bff;
+            color: #000;
+            box-shadow: 0 0 10px #007bff;
+        }
+
+
+        /* 📝 입력창 (Input, Textarea) */
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            background: #2a2a2a; /* 어두운 입력창 배경 */
+            border: 2px solid #444; /* 어두운 테두리 */
+            border-radius: 0; /* 칼각 */
+            color: #fff; /* 입력 글자색 흰색 */
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        /* 입력창 포커스 시: 파란색 네온 효과 */
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            background: #333;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+
+        label { color: #aaa; font-weight: bold; margin-bottom: 10px; display: block;}
+        .form-group { margin-bottom: 25px; }
+        .btn-group { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-group .btn { flex: 1; }
+
+        /* 📊 테이블 (리스트 페이지용) */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #333; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
+        th {
+            background-color: #252525; /* 헤더 배경 어둡게 */
+            color: #ff5722; /* 헤더 글자 오렌지 */
+            text-transform: uppercase;
+            border-bottom: 2px solid #ff5722;
+        }
+        tr:hover td {
+            background-color: #ff5722; /* 마우스 올리면 오렌지색 반전 */
+            color: #000; /* 글자는 검정으로 */
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* 📄 상세 페이지 전용 */
+        .header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .title { font-size: 32px; font-weight: 900; color: #fff; margin-bottom: 15px; text-transform: uppercase;}
+        .info { color: #888; font-size: 14px; display: flex; gap: 20px; }
+        .nickname { color: #007bff; font-weight: bold; } /* 닉네임 파란색 포인트 */
+        .content { line-height: 1.8; min-height: 300px; white-space: pre-wrap; font-size: 16px; border-bottom: 2px solid #333; padding-bottom: 30px; margin-bottom: 30px; color: #ccc; }
+
+        /* 페이징 버튼 */
+        .pagination button { background: #2a2a2a; color: #888; border: 1px solid #444; border-radius: 0; }
+        /* 현재 페이지 활성화 */
+        .pagination button.active { background: #ff5722; color: black; border-color: #ff5722; font-weight: bold;}
+    </style>
 </head>
 <body>
-
-<div id="authContent">
+<div id="authContent" style="display:none;">
     <h1 id="welcomeMsg">사용자 정보를 불러오는 중...</h1>
     <button id="logoutBtn">로그아웃</button>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // 사용자 정보 가져오기
         fetch('/api/user/info')
             .then(res => {
                 if (!res.ok) throw new Error("인증 실패");
                 return res.json();
             })
             .then(user => {
-                // 유저 정보 표시 (JwtUtil에서 넣은 nickname 사용)
-                document.getElementById('welcomeMsg').innerText =
-                    `${user.nickname}님, 환영합니다!`;
+                document.getElementById('authContent').style.display = 'block';
+                document.getElementById('welcomeMsg').innerText = `${user.nickname}님, 환영합니다!`;
             })
             .catch(err => {
                 console.error(err);
-                alert("로그인이 필요합니다.");
                 location.href = "/login";
             });
-
-        // 로그아웃 버튼 이벤트
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            fetch('/api/login/logout', { method: 'POST' })
-                .then(() => {
-                    alert("로그아웃 되었습니다.");
-                    location.href = "/login";
-                });
-        });
     });
 </script>
 
