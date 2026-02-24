@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class BoardService implements IBoardService {
     private final UserRepository userRepository;
 
     public PageResponse<BoardResponse> getBoards(int page){
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<BoardResponse> boardEntities = boardRepository.findAllByStatus(0,pageable).map(BoardResponse::new);
         return PageResponse.of(boardEntities);
     }
