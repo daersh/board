@@ -33,4 +33,9 @@ public class BoardEntity extends TimeEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_uuid")
     private List<BoardCmtEntity> boardCmts;
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

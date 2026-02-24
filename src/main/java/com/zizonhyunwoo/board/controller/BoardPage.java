@@ -12,4 +12,16 @@ public class BoardPage {
     public String BoardList() {
         return "board";
     }
+    @GetMapping("write")
+    public String Write() {
+        return "write";
+    }
+    @GetMapping("detail")
+    public String Detail() {
+        return "detail";
+    }
+    @GetMapping("edit")
+    public String Edit() {
+        return "edit";
+    }
 }

@@ -1,12 +1,16 @@
 package com.zizonhyunwoo.board.api;
 
+import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.request.BoardRequest;
 import com.zizonhyunwoo.board.response.BoardResponse;
 import com.zizonhyunwoo.board.response.PageResponse;
 import com.zizonhyunwoo.board.service.IBoardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 
 
 @RestController
@@ -26,9 +30,18 @@ public class BoardController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> save(@RequestBody BoardRequest.Create request) {
-        boardService.save(request);
+    public ResponseEntity<String> save(@RequestBody BoardRequest.Create request, @AuthenticationPrincipal UserPrincipal user) {
+        boardService.save(request,user);
         return ResponseEntity.ok("Saved");
+    }
+
+    @PutMapping("")
+    public ResponseEntity<String> update(
+            @RequestBody @Valid BoardRequest.Update request,
+            @AuthenticationPrincipal UserPrincipal user) {
+
+        boardService.update(request, user);
+        return ResponseEntity.ok("Updated");
     }
 
 }

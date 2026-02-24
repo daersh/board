@@ -1,0 +1,26 @@
+<div class="container">
+  <h2>✍️ 새로운 이야기 들려주기</h2>
+  <input type="text" id="title" placeholder="제목을 입력해줘요 ✨" style="width:100%; padding:10px; margin-bottom:10px;">
+  <textarea id="content" rows="10" placeholder="럭키비키한 내용을 적어주세요 💖" style="width:100%; padding:10px;"></textarea>
+  <button onclick="saveBoard()" style="width:100%; padding:15px; background:#ff69b4; color:white; border:none; border-radius:10px; font-weight:bold; margin-top:10px;">등록하기 🚀</button>
+</div>
+
+<script>
+  function saveBoard() {
+    const data = {
+      title: document.getElementById('title').value,
+      content: document.getElementById('content').value
+    };
+
+    fetch('/api/board', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(res => {
+      if(res.ok) {
+        alert("게시글이 저장됐어요! 럭키비키~ ✨");
+        location.href = "/board";
+      }
+    });
+  }
+</script>

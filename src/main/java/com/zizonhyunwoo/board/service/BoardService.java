@@ -1,5 +1,6 @@
 package com.zizonhyunwoo.board.service;
 
+import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.dao.BoardCmtRepository;
 import com.zizonhyunwoo.board.dao.BoardRepository;
 import com.zizonhyunwoo.board.dao.UserRepository;
@@ -14,8 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -36,14 +36,10 @@ public class BoardService implements IBoardService {
     }
 
     @Transactional
-    public void save(BoardRequest.Create request) {
+    public void save(BoardRequest.Create request, UserPrincipal userPrincipal) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated())
-            throw new BoardException("존재하지 않은 사용자 ");
-
-        String userId = authentication.getName();
-        UserEntity user = userRepository.getReferenceById(UUID.fromString(userId));
+        UUID userId = userPrincipal.getUserId();
+        UserEntity user = userRepository.getReferenceById(userId);
 
         BoardEntity boardEntity = BoardEntity.builder()
                 .title(request.getTitle())
@@ -57,6 +53,19 @@ public class BoardService implements IBoardService {
     @Override
     public BoardResponse getBoardById(String boardId) {
         return new BoardResponse(boardRepository.findById(UUID.fromString(boardId)).orElseThrow(()-> new BoardException("")));
+    }
+
+    @Override
+    @Transactional
+    public void update(BoardRequest.Update request, UserPrincipal principal) {
+        BoardEntity board = boardRepository.findById(request.getId())
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없어요 ㅠㅠ"));
+
+        if (!board.getUser().getId().equals(principal.getUserId())) {
+            throw new AccessDeniedException("수정 권한이 없어요! ✨");
+        }
+
+        board.update(request.getTitle(), request.getContent());
     }
 
 }

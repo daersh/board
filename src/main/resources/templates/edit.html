@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정 ✨</title>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        h2 { color: #ff69b4; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        input[type="text"], textarea {
+            width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 10px;
+            box-sizing: border-box; font-size: 16px;
+        }
+        input:focus, textarea:focus { outline: none; border-color: #ff69b4; }
+        .btn-group { display: flex; gap: 10px; margin-top: 30px; }
+        .btn { flex: 1; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .btn-save { background: #ff69b4; color: white; }
+        .btn-cancel { background: #eee; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎀 게시글 수정하기 🎀</h2>
+
+    <div class="form-group">
+        <label>제목</label>
+        <input type="text" id="title" placeholder="제목을 입력해주세요 ✨">
+    </div>
+
+    <div class="form-group">
+        <label>내용</label>
+        <textarea id="content" rows="12" placeholder="내용을 입력해주세요 💖"></textarea>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-cancel" onclick="history.back()">취소</button>
+        <button class="btn btn-save" onclick="updateBoard()">수정 완료 🚀</button>
+    </div>
+</div>
+
+<script>
+    // 1. URL에서 ID 꺼내기 ✨
+    const urlParams = new URLSearchParams(window.location.search);
+    const boardId = urlParams.get('id');
+
+    // 2. 페이지 로드 시 기존 데이터 불러와서 채워주기 💎
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!boardId) {
+            alert("잘못된 접근이에요! 🙅‍♀️");
+            location.href = "/board";
+            return;
+        }
+
+        fetch(`/api/board/${boardId}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('title').value = data.title;
+                document.getElementById('content').value = data.content;
+            })
+            .catch(err => console.error("데이터 로딩 실패 ㅠㅠ", err));
+    });
+
+    // 3. 수정 버튼 클릭 시 API 호출! 💖
+    function updateBoard() {
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+
+        if (!title.trim() || !content.trim()) {
+            alert("제목과 내용을 모두 입력해주세요! ✨");
+            return;
+        }
+
+        const requestData = {
+            id: boardId, // DTO에 UUID id 필드가 있으니까 꼭 넣어줘야 해! ✨
+            title: title,
+            content: content
+        };
+
+        fetch('/api/board', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
