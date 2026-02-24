@@ -18,5 +18,5 @@ public interface IBoardService {
 
     void update(BoardRequest.Update request, UserPrincipal user);
 
-    void delete(UUID boardId);
+    void delete(UUID boardId, UserPrincipal user);
 }

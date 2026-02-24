@@ -46,8 +46,9 @@ public class BoardController {
     }
 
     @DeleteMapping("{boardId}")
-    public ResponseEntity<String> delete(@PathVariable UUID boardId) {
-        boardService.delete(boardId);
+    public ResponseEntity<String> delete(@PathVariable UUID boardId,
+            @AuthenticationPrincipal UserPrincipal user) {
+        boardService.delete(boardId, user);
         return ResponseEntity.ok("Deleted");
     }
 }
