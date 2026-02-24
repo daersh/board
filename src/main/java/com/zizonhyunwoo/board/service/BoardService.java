@@ -71,6 +71,7 @@ public class BoardService implements IBoardService {
     @Override
     public void delete(UUID boardId, UserPrincipal userPrincipal) {
         BoardEntity board = boardRepository.getReferenceById(boardId);
+        
         if (!board.getUser().getId().equals(userPrincipal.getUserId())) {
             throw new AccessDeniedException("삭제 권한이 없어요! ✨");
         }
