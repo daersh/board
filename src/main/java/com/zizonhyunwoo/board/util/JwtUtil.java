@@ -1,6 +1,7 @@
 package com.zizonhyunwoo.board.util;
 
 
+import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.model.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -90,13 +91,16 @@ public class JwtUtil {
         Claims claims = getClaims(token);
 
         String userId = claims.get("userId", String.class);
+        String email = claims.get("email", String.class);
+        String nickname = claims.get("nickname", String.class);
         String role = claims.get("role", String.class);
         if (role == null || role.isEmpty()) {
             role = "USER";
         }
         List<SimpleGrantedAuthority> authorities =
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
+        UserPrincipal principal = new UserPrincipal(userId, "", authorities,userId,email,nickname);
 
-        return new UsernamePasswordAuthenticationToken(userId, null, authorities);
+        return new UsernamePasswordAuthenticationToken(principal, null, authorities);
     }
 }
