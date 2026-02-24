@@ -31,7 +31,7 @@ public class BoardController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> save(@RequestBody BoardRequest.Create request, @AuthenticationPrincipal UserPrincipal user) {
+    public ResponseEntity<String> save(@RequestBody @Valid BoardRequest.Create request, @AuthenticationPrincipal UserPrincipal user) {
         boardService.save(request,user);
         return ResponseEntity.ok("Saved");
     }
@@ -45,7 +45,7 @@ public class BoardController {
         return ResponseEntity.ok("Updated");
     }
 
-    @DeleteMapping("{boardId}")
+    @DeleteMapping("/{boardId}")
     public ResponseEntity<String> delete(@PathVariable UUID boardId,
             @AuthenticationPrincipal UserPrincipal user) {
         boardService.delete(boardId, user);
