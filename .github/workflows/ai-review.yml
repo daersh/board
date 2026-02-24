@@ -7,6 +7,7 @@ on:
 jobs:
   review:
     runs-on: ubuntu-latest
+    # 중요: PR에 댓글을 쓸 수 있는 권한을 명시적으로 부여합니다.
     permissions:
       contents: read
       pull-requests: write
@@ -14,17 +15,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Gemini Code Review
-        uses: google-gemini/ai-pr-reviewer@main # 공식 또는 검증된 액션 활용
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Gemini AI Reviewer
+        # 다른 버전인 google-gemini/gemini-github-action 등을 시도해볼 수 있습니다.
+        # 여기서는 가장 많이 쓰이는 구조로 예시를 듭니다.
+        uses: google-gemini/ai-pr-reviewer@v0.1.0 
         with:
-          # 지시 사항을 한국어로 설정
-          system_message: |
-            당신은 유능한 시니어 소프트웨어 엔지니어입니다. 
-            제공된 코드 변경 사항(diff)을 분석하여 버그, 보안 취약점, 성능 개선 사항을 리뷰해 주세요.
-            모든 답변은 반드시 한국어로 작성해야 하며, 친절하고 건설적인 톤을 유지하세요.
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          system_message: "당신은 한국인 시니어 개발자입니다. 코드를 리뷰하고 한국어로 피드백을 주세요."
