@@ -45,6 +45,7 @@ public class BoardController {
         return ResponseEntity.ok("Updated");
     }
 
+// 게시판 삭제 
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> delete(@PathVariable UUID boardId,
             @AuthenticationPrincipal UserPrincipal user) {
