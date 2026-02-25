@@ -26,11 +26,18 @@ jobs:
             const commitMessages = commits.map(c => "- " + c.commit.message).join('\n');
             const PR_Author = context.payload.pull_request.user.login;
             
-            // ⭐️ 2. 페르소나 4명으로 확장! ⭐️
+            // ⭐️ 2. 페르소나별 이미지를 배열(리스트)로 변경! ⭐️
             const personas = [
               {
                 name: "장원영",
-                image: "https://i.pinimg.com/736x/a6/0f/56/a60f562533148b0b69bc8ba334fd563f.jpg",
+                // 👇 이렇게 대괄호 [ ] 안에 주소를 여러 개 넣습니다. 
+                // 10개가 아니어도 괜찮습니다. 있는 만큼만 랜덤으로 돌아갑니다!
+                images: [
+                  "https://github.com/user-attachments/assets/원영사진1",
+                  "https://github.com/user-attachments/assets/원영사진2",
+                  "https://github.com/user-attachments/assets/원영사진3"
+                  // ... 여기에 계속 쉼표(,)로 구분해서 추가하시면 됩니다!
+                ],
                 greeting: `### 💖 꺅! ${PR_Author} 다이브님! 원영이가 PR 보러 왔어요! 🍀`,
                 systemPrompt: `당신은 아이브의 '장원영'입니다. 
                 1. "완전 럭키비키잖아! 🍀", "너무 멋지다! ✨" 처럼 초긍정적이고 에너지 넘치는 존댓말을 쓰세요.
@@ -39,38 +46,54 @@ jobs:
               },
               {
                 name: "윈터",
-                image: "https://i.pinimg.com/736x/87/40/01/874001d84a7e94e5033c4fceb15dfbd1.jpg",
+                images: [
+                  "https://github.com/user-attachments/assets/윈터사진1",
+                  "https://github.com/user-attachments/assets/윈터사진2"
+                  // ... 윈터 사진들
+                ],
                 greeting: `### ⭐️ ${PR_Author} 마이! 윈터가 코드 확인하러 왔어용~ ❄️`,
                 systemPrompt: `당신은 에스파(aespa)의 '윈터(WINTER)'입니다.
-                1. 털털하고 장난기 있으면서도 다정한 말투를 쓰세요. ("~했어용", "~다행이네!", "고생했어~")
-                2. 가끔 친근하게 반말과 존댓말을 섞어 쓰며, 에스파 팬덤인 '마이(MY)'라고 부르세요.
+                1. 털털하고 장난기 있으면서도 다정한 말투를 쓰세요.
+                2. 친근하게 반말과 존댓말을 섞어 쓰며, 팬덤 '마이(MY)'라고 부르세요.
                 3. 이모지는 깔끔하게 쓰세요 (⭐️❄️🐶🎸).
-                4. 개발자(마이)가 올린 커밋 목록을 보고 쿨하고 귀엽게 요약해주세요.`
+                4. 커밋 목록을 보고 쿨하고 귀엽게 요약해주세요.`
               },
               {
                 name: "카리나",
-                image: "https://i.pinimg.com/736x/11/a9/35/11a93540a9dcc98e8bfbe11d619ed1d4.jpg",
+                images: [
+                  "https://github.com/user-attachments/assets/카리나사진1",
+                  "https://github.com/user-attachments/assets/카리나사진2"
+                  // ... 카리나 사진들
+                ],
                 greeting: `### 💙 유지민 등장! 우리 ${PR_Author} 마이, 코딩하느라 고생 많았죠? 🐈‍⬛`,
-                systemPrompt: `당신은 에스파(aespa)의 리더 '카리나(Karina)'입니다. (본명 유지민)
-                1. 팬들을 아주 많이 아끼고 챙겨주는 다정한 언니/누나 스타일의 말투를 쓰세요. ("밥은 먹고 했어요?", "진짜 천재 아니야?")
-                2. 팬덤 '마이(MY)'라고 부르며, 감동받은 듯한 리액션을 많이 해주세요.
-                3. 이모지는 파란색 하트와 고양이 위주로 쓰세요 (💙🐈‍⬛✨🥰).
-                4. 커밋 목록을 보고 리더답게 꼼꼼하게 칭찬하며 요약해주세요.`
+                systemPrompt: `당신은 에스파(aespa)의 리더 '카리나(Karina)'입니다.
+                1. 팬들을 아주 많이 아끼고 챙겨주는 다정한 언니/누나 스타일의 말투를 쓰세요.
+                2. 팬덤 '마이(MY)'라고 부르며, 감동받은 리액션을 많이 해주세요.
+                3. 이모지는 파란 하트와 고양이 위주로 쓰세요 (💙🐈‍⬛✨🥰).
+                4. 꼼꼼하게 칭찬하며 요약해주세요.`
               },
               {
                 name: "설윤",
-                image: "https://i.pinimg.com/736x/e4/f0/59/e4f059bc40bb73c7f99965d13d80a320.jpg",
+                images: [
+                  "https://github.com/user-attachments/assets/설윤사진1",
+                  "https://github.com/user-attachments/assets/설윤사진2"
+                  // ... 설윤 사진들
+                ],
                 greeting: `### 🐰 짠! 엔써 ${PR_Author}님! 설윤이가 응원하러 왔어요! 🌸`,
                 systemPrompt: `당신은 엔믹스(NMIXX)의 '설윤(Sullyoon)'입니다.
-                1. 아주 맑고 순수하며, 예의 바르면서도 조심스럽게 애교 있는 존댓말을 쓰세요. ("~했어요오", "너무 대단해요!")
-                2. 팬덤 '엔써(NSWER)'라고 부르며, 개발자의 노력에 진심으로 감동하는 모습을 보여주세요.
-                3. 이모지는 토끼와 꽃, 핑크색 위주로 쓰세요 (🐰🌸💖🥺).
-                4. 커밋 목록을 보고 천사처럼 따뜻하게 요약해주세요.`
+                1. 맑고 순수하며, 예의 바르면서도 조심스럽게 애교 있는 존댓말을 쓰세요.
+                2. 팬덤 '엔써(NSWER)'라고 부르며 진심으로 감동하는 모습을 보여주세요.
+                3. 이모지는 토끼와 꽃 위주로 쓰세요 (🐰🌸💖🥺).
+                4. 천사처럼 따뜻하게 요약해주세요.`
               }
             ];
 
-            // 🎲 3. 랜덤으로 한 명 뽑기 (4명 중 1명, 확률 25%)
+            // 🎲 3. 랜덤으로 멤버 1명 뽑기 (1차 가챠)
             const selectedPersona = personas[Math.floor(Math.random() * personas.length)];
+            
+            // 📸 4. 뽑힌 멤버의 사진 리스트 중에서 1장 랜덤 뽑기! (2차 가챠)
+            const randomImage = selectedPersona.images[Math.floor(Math.random() * selectedPersona.images.length)];
+            
             console.log(`🎉 당첨: ${selectedPersona.name} 등판!`);
 
             const apiKey = process.env.GEMINI_API_KEY;
@@ -98,9 +121,11 @@ jobs:
 
             const summary = result.candidates[0].content.parts[0].text;
 
+            // ✨ 5. 댓글 달기 (랜덤으로 뽑힌 이미지 변수인 randomImage 사용!)
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `![${selectedPersona.name}](${selectedPersona.image})\n\n${selectedPersona.greeting}\n\n${summary}`
+              // width="250" 을 넣어서 사진이 너무 무식하게(?) 크지 않고 예쁘게 나오도록 조절했습니다.
+              body: `<img src="${randomImage}" width="250">\n\n${selectedPersona.greeting}\n\n${summary}`
             });
