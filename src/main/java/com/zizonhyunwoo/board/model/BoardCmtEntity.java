@@ -1,5 +1,6 @@
 package com.zizonhyunwoo.board.model;
 
+import com.zizonhyunwoo.board.dto.BoardCmtDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,4 +44,15 @@ public class BoardCmtEntity extends TimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private BoardEntity board;
+
+    public void create(BoardCmtDto.Create create, BoardEntity board, UserEntity user) {
+        this.content = create.getContent();
+        this.type = create.getType();
+        this.targetId = create.getTargetId();
+        this.status = 0;
+        this.reportCount = 0;
+        this.user = user;
+        this.board = board;
+    }
+
 }

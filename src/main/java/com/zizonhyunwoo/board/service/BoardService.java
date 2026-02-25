@@ -51,17 +51,17 @@ public class BoardService implements IBoardService {
 
     @Override
     public BoardResponse getBoardById(String boardId) {
-        return new BoardResponse(boardRepository.findById(UUID.fromString(boardId)).orElseThrow(()-> new BoardException("")));
+        return new BoardResponse(boardRepository.findById(UUID.fromString(boardId)).orElseThrow(()-> new BoardException("게시글을 찾을 수 없음")));
     }
 
     @Override
     @Transactional
     public void update(BoardRequest.Update request, UserPrincipal principal) {
         BoardEntity board = boardRepository.findById(request.getId())
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없어요 ㅠㅠ"));
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없음"));
 
         if (!board.getUser().getId().equals(principal.getUserId())) {
-            throw new AccessDeniedException("수정 권한이 없어요! ✨");
+            throw new AccessDeniedException("수정 권한이 없음");
         }
 
         board.update(request.getTitle(), request.getContent());
@@ -71,9 +71,9 @@ public class BoardService implements IBoardService {
     @Override
     public void delete(UUID boardId, UserPrincipal userPrincipal) {
         BoardEntity board = boardRepository.findById(boardId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));        
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물"));        
         if (!board.getUser().getId().equals(userPrincipal.getUserId())) {
-            throw new AccessDeniedException("삭제 권한이 없어요! ✨");
+            throw new AccessDeniedException("삭제 권한이 없음");
         }
         board.delete();
 
