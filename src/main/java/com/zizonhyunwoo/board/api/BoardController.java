@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -55,9 +56,16 @@ public class BoardController {
         return ResponseEntity.ok("Deleted");
     }
 
-    @PostMapping("/board-comment")
+    @GetMapping("/comment")
+    public ResponseEntity<List<BoardCmtDto.Response>> findBoardComments(@RequestParam int page, @RequestParam String boardId) {
+
+        return ResponseEntity.ok(boardCmtService.findBoardComments(page, UUID.fromString(boardId)));
+    }
+
+    @PostMapping("/comment")
     public ResponseEntity<String> createBoardComment(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody BoardCmtDto.Create request) {
         boardCmtService.insert(request,userPrincipal);
         return ResponseEntity.ok("Created");
     }
+
 }
