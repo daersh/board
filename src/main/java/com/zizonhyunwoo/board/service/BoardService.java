@@ -51,7 +51,7 @@ public class BoardService implements IBoardService {
 
     @Override
     public BoardResponse getBoardById(String boardId) {
-        return new BoardResponse(boardRepository.findById(UUID.fromString(boardId)).orElseThrow(()-> new BoardException("")));
+        return new BoardResponse(boardRepository.findById(UUID.fromString(boardId)).orElseThrow(()-> new BoardException("게시글을 찾을 수 없음")));
     }
 
     @Override
