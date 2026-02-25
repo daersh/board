@@ -8,12 +8,12 @@ import com.zizonhyunwoo.board.dto.BoardCmtDto;
 import com.zizonhyunwoo.board.model.BoardCmtEntity;
 import com.zizonhyunwoo.board.model.BoardEntity;
 import com.zizonhyunwoo.board.model.UserEntity;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
