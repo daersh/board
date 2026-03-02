@@ -2,6 +2,7 @@ package com.zizonhyunwoo.board.dto;
 
 import com.zizonhyunwoo.board.model.BoardEntity;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,16 +18,20 @@ public class BoardDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Create {
+        @NotBlank
         private String title;
+        @NotBlank
         private String content;
     }
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Update {
-        @NotBlank
+        @NotNull
         private UUID id;
+        @NotBlank
         private String title;
+        @NotBlank
         private String content;
     }
 
