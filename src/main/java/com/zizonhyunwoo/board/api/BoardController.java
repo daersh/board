@@ -50,20 +50,26 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<String> delete(@PathVariable UUID boardId,
+    public ResponseEntity<String> delete(
+            @PathVariable UUID boardId,
             @AuthenticationPrincipal UserPrincipal user) {
         boardService.delete(boardId, user);
         return ResponseEntity.ok("Deleted");
     }
 
     @GetMapping("/comment")
-    public ResponseEntity<List<BoardCmtDto.Response>> findBoardComments(@RequestParam int page, @RequestParam String boardId) {
-
+    public ResponseEntity<List<BoardCmtDto.Response>> findBoardComments(
+            @RequestParam int page,
+            @RequestParam String boardId
+    ) {
         return ResponseEntity.ok(boardCmtService.findBoardComments(page, UUID.fromString(boardId)));
     }
 
     @PostMapping("/comment")
-    public ResponseEntity<String> createBoardComment(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody BoardCmtDto.Create request) {
+    public ResponseEntity<String> createBoardComment(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestBody@Valid BoardCmtDto.Create request
+    ) {
         boardCmtService.insert(request,userPrincipal);
         return ResponseEntity.ok("Created");
     }

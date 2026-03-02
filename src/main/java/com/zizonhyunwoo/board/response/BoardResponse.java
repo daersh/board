@@ -1,9 +1,11 @@
 package com.zizonhyunwoo.board.response;
 
+import com.zizonhyunwoo.board.dto.BoardCmtDto;
 import com.zizonhyunwoo.board.model.BoardEntity;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -15,6 +17,7 @@ public class BoardResponse{
     LocalDateTime createdAt;
     LocalDateTime modifiedAt;
     String nickname;
+    List<BoardCmtDto.Response>  boardCmtDtos;
 
     public BoardResponse(BoardEntity board) {
         this.id = board.getId();
@@ -24,5 +27,6 @@ public class BoardResponse{
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
         this.nickname = board.getUser().getNickname();
+        this.boardCmtDtos = board.getBoardCmts().stream().map(BoardCmtDto.Response::new).toList();
     }
 }
