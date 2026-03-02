@@ -2,8 +2,8 @@ package com.zizonhyunwoo.board.service;
 
 import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.dao.UserRepository;
+import com.zizonhyunwoo.board.dto.UserDto;
 import com.zizonhyunwoo.board.model.UserEntity;
-import com.zizonhyunwoo.board.request.UserRequest;
 import com.zizonhyunwoo.board.response.PageResponse;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -42,7 +42,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity save(@RequestBody @Valid UserRequest.Create request) throws BadRequestException {
+    public UserEntity save(@RequestBody @Valid UserDto.Create request) throws BadRequestException {
 
         Optional<UserEntity> user =userRepository.findByEmail(request.getEmail());
 

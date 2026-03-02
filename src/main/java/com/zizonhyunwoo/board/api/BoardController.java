@@ -2,7 +2,7 @@ package com.zizonhyunwoo.board.api;
 
 import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.dto.BoardCmtDto;
-import com.zizonhyunwoo.board.request.BoardRequest;
+import com.zizonhyunwoo.board.dto.BoardDto;
 import com.zizonhyunwoo.board.response.BoardResponse;
 import com.zizonhyunwoo.board.response.PageResponse;
 import com.zizonhyunwoo.board.service.IBoardCmtService;
@@ -35,14 +35,14 @@ public class BoardController {
     }
 
     @PostMapping("")
-    public ResponseEntity<String> save(@RequestBody @Valid BoardRequest.Create request, @AuthenticationPrincipal UserPrincipal user) {
+    public ResponseEntity<String> save(@RequestBody @Valid BoardDto.Create request, @AuthenticationPrincipal UserPrincipal user) {
         boardService.save(request,user);
         return ResponseEntity.ok("Saved");
     }
 
     @PutMapping("")
     public ResponseEntity<String> update(
-            @RequestBody @Valid BoardRequest.Update request,
+            @RequestBody @Valid BoardDto.Update request,
             @AuthenticationPrincipal UserPrincipal user) {
 
         boardService.update(request, user);

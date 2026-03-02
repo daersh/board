@@ -1,7 +1,7 @@
 package com.zizonhyunwoo.board.api;
 
 import com.zizonhyunwoo.board.dao.UserRepository;
-import com.zizonhyunwoo.board.dto.LoginRequest;
+import com.zizonhyunwoo.board.dto.LoginDto;
 import com.zizonhyunwoo.board.model.UserEntity;
 import com.zizonhyunwoo.board.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +31,7 @@ public class LoginController {
 // 로그인
     @PostMapping("")
     @Transactional
-    public ResponseEntity<Void> login(@RequestBody@Valid LoginRequest dto, HttpServletResponse response) {
+    public ResponseEntity<Void> login(@RequestBody@Valid LoginDto dto, HttpServletResponse response) {
         log.info("Login Request: {}", dto);
         UserEntity user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자"));

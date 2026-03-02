@@ -1,4 +1,4 @@
-package com.zizonhyunwoo.board.request;
+package com.zizonhyunwoo.board.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-public class BoardRequest {
+public class BoardDto {
+
 
     @Getter
     @NoArgsConstructor

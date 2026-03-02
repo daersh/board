@@ -4,10 +4,10 @@ import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.dao.BoardCmtRepository;
 import com.zizonhyunwoo.board.dao.BoardRepository;
 import com.zizonhyunwoo.board.dao.UserRepository;
+import com.zizonhyunwoo.board.dto.BoardDto;
 import com.zizonhyunwoo.board.exception.BoardException;
 import com.zizonhyunwoo.board.model.BoardEntity;
 import com.zizonhyunwoo.board.model.UserEntity;
-import com.zizonhyunwoo.board.request.BoardRequest;
 import com.zizonhyunwoo.board.response.BoardResponse;
 import com.zizonhyunwoo.board.response.PageResponse;
 import jakarta.transaction.Transactional;
@@ -35,7 +35,7 @@ public class BoardService implements IBoardService {
     }
 
     @Transactional
-    public void save(BoardRequest.Create request, UserPrincipal userPrincipal) {
+    public void save(BoardDto.Create request, UserPrincipal userPrincipal) {
 
         UUID userId = userPrincipal.getUserId();
         UserEntity user = userRepository.getReferenceById(userId);
@@ -56,7 +56,7 @@ public class BoardService implements IBoardService {
 
     @Override
     @Transactional
-    public void update(BoardRequest.Update request, UserPrincipal principal) {
+    public void update(BoardDto.Update request, UserPrincipal principal) {
         BoardEntity board = boardRepository.findById(request.getId())
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없음"));
 
