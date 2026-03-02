@@ -1,6 +1,6 @@
 package com.zizonhyunwoo.board.model;
 
-import com.zizonhyunwoo.board.request.UserRequest;
+import com.zizonhyunwoo.board.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,7 +35,7 @@ public class UserEntity extends TimeEntity{
     @Column
     private String role;
 
-    public UserEntity(UserRequest.Create request, @Nullable String encode) {
+    public UserEntity(UserDto.Create request, @Nullable String encode) {
         this.username = request.getUsername();
         this.password = encode;
         this.email = request.getEmail();
