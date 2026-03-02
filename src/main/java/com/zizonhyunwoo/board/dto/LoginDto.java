@@ -6,7 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Getter@NoArgsConstructor@AllArgsConstructor@ToString
+@Getter@NoArgsConstructor@AllArgsConstructor
+@ToString(exclude = "password")
 public class LoginDto {
     @NotBlank
     private String email;
