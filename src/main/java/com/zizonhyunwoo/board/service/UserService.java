@@ -47,7 +47,7 @@ public class UserService {
         Optional<UserEntity> user =userRepository.findByEmail(request.getEmail());
 
         if (user.isPresent())
-            throw new BadRequestException("Email already exists");
+            throw new BadRequestException("이메일 중복 ");
 
         return userRepository.save(new UserEntity(request,passwordEncoder.encode(request.getPassword())));
 

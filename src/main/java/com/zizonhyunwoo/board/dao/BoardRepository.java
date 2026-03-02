@@ -21,7 +21,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, UUID> {
     @Query("select b from BoardEntity b where b.status = :status")
     Page<BoardEntity> findAllByStatus(int status, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"user"})
+    @EntityGraph(attributePaths = {"user","comments"})
     Optional<BoardEntity> findById(UUID id);
 
 }
