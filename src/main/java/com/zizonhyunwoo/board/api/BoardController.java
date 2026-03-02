@@ -3,8 +3,7 @@ package com.zizonhyunwoo.board.api;
 import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.dto.BoardCmtDto;
 import com.zizonhyunwoo.board.dto.BoardDto;
-import com.zizonhyunwoo.board.response.BoardResponse;
-import com.zizonhyunwoo.board.response.PageResponse;
+import com.zizonhyunwoo.board.dto.PageDto;
 import com.zizonhyunwoo.board.service.IBoardCmtService;
 import com.zizonhyunwoo.board.service.IBoardService;
 import jakarta.validation.Valid;
@@ -25,12 +24,12 @@ public class BoardController {
     private final IBoardCmtService boardCmtService;
 
     @GetMapping("")
-    public ResponseEntity<PageResponse<BoardResponse>> findAll(@RequestParam  int page) {
+    public ResponseEntity<PageDto<BoardDto.Response>> findAll(@RequestParam  int page) {
         return ResponseEntity.ok(boardService.getBoards(page));
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<BoardResponse> findOne(@PathVariable String boardId) {
+    public ResponseEntity<BoardDto.Response> findOne(@PathVariable String boardId) {
         return ResponseEntity.ok(boardService.getBoardById(boardId));
     }
 

@@ -4,7 +4,7 @@ import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.dao.UserRepository;
 import com.zizonhyunwoo.board.dto.UserDto;
 import com.zizonhyunwoo.board.model.UserEntity;
-import com.zizonhyunwoo.board.response.PageResponse;
+import com.zizonhyunwoo.board.dto.PageDto;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +27,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public PageResponse<UserEntity> findAll(@RequestParam int page) {
+    public PageDto<UserEntity> findAll(@RequestParam int page) {
 
-        return PageResponse.of(userRepository.findAll(PageRequest.of(page, 10, Sort.by("id").descending())));
+        return PageDto.of(userRepository.findAll(PageRequest.of(page, 10, Sort.by("id").descending())));
     }
 
     public ResponseEntity<UserEntity> info(@AuthenticationPrincipal UserPrincipal user) {

@@ -8,8 +8,7 @@ import com.zizonhyunwoo.board.dto.BoardDto;
 import com.zizonhyunwoo.board.exception.BoardException;
 import com.zizonhyunwoo.board.model.BoardEntity;
 import com.zizonhyunwoo.board.model.UserEntity;
-import com.zizonhyunwoo.board.response.BoardResponse;
-import com.zizonhyunwoo.board.response.PageResponse;
+import com.zizonhyunwoo.board.dto.PageDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,10 +27,10 @@ public class BoardService implements IBoardService {
     private final BoardCmtRepository boardCmtRepository;
     private final UserRepository userRepository;
 
-    public PageResponse<BoardResponse> getBoards(int page){
+    public PageDto<BoardDto.Response> getBoards(int page){
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<BoardResponse> boardEntities = boardRepository.findAllByStatus(0,pageable).map(BoardResponse::new);
-        return PageResponse.of(boardEntities);
+        Page<BoardDto.Response> boardEntities = boardRepository.findAllByStatus(0,pageable).map(BoardDto.Response::new);
+        return PageDto.of(boardEntities);
     }
 
     @Transactional
@@ -50,8 +49,8 @@ public class BoardService implements IBoardService {
     }
 
     @Override
-    public BoardResponse getBoardById(String boardId) {
-        return new BoardResponse(boardRepository.findById(UUID.fromString(boardId)).orElseThrow(()-> new BoardException("게시글을 찾을 수 없음")));
+    public BoardDto.Response getBoardById(String boardId) {
+        return new BoardDto.Response(boardRepository.findById(UUID.fromString(boardId)).orElseThrow(()-> new BoardException("게시글을 찾을 수 없음")));
     }
 
     @Override
