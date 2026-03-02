@@ -3,6 +3,7 @@ package com.zizonhyunwoo.board.dto;
 import com.zizonhyunwoo.board.model.BoardCmtEntity;
 import com.zizonhyunwoo.board.model.CommentType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,7 @@ public class BoardCmtDto {
     public static class Create{
         @NotBlank
         private String content;
-        @NotBlank
+        @NotNull
         private CommentType type;
         @NotBlank
         private String targetId;
