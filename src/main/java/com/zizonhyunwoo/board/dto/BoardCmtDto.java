@@ -22,7 +22,7 @@ public class BoardCmtDto {
         private CommentType type;
         @NotBlank
         private String targetId;
-        @NotBlank
+        @NotNull
         private UUID boardId;
     }
 
@@ -37,13 +37,13 @@ public class BoardCmtDto {
         private String nickname;
         private UUID boardId;
 
-        public Response(BoardCmtEntity board) {
-            this.commentId = board.getUuid();
-            this.content = board.getContent();
-            this.type = board.getType();
-            this.targetId = board.getTargetId();
-            this.nickname = board.getUser().getNickname();
-            this.boardId = board.getBoard().getId();
+        public Response(BoardCmtEntity cmt) {
+            this.commentId = cmt.getUuid();
+            this.content = cmt.getContent();
+            this.type = cmt.getType();
+            this.targetId = cmt.getTargetId();
+            this.nickname = cmt.getUser().getNickname();
+            this.boardId = cmt.getBoard().getId();
         }
 
     }

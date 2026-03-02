@@ -60,9 +60,9 @@ public class BoardController {
     @GetMapping("/comment")
     public ResponseEntity<List<BoardCmtDto.Response>> findBoardComments(
             @RequestParam int page,
-            @RequestParam String boardId
+            @RequestParam UUID boardId
     ) {
-        return ResponseEntity.ok(boardCmtService.findBoardComments(page, UUID.fromString(boardId)));
+        return ResponseEntity.ok(boardCmtService.findBoardComments(page, boardId));
     }
 
     @PostMapping("/comment")

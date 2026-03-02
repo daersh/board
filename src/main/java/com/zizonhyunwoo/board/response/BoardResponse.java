@@ -27,6 +27,6 @@ public class BoardResponse{
         this.createdAt = board.getCreatedAt();
         this.modifiedAt = board.getModifiedAt();
         this.nickname = board.getUser().getNickname();
-        this.boardCmtDtos = board.getBoardCmts().stream().map(BoardCmtDto.Response::new).toList();
+        this.boardCmtDtos = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
     }
 }
