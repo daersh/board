@@ -7,14 +7,13 @@ import com.zizonhyunwoo.board.dto.PageDto;
 import com.zizonhyunwoo.board.service.IBoardCmtService;
 import com.zizonhyunwoo.board.service.IBoardService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
-
 
 @RestController
 @RequestMapping("/api/board") 
@@ -24,25 +23,42 @@ public class BoardController {
     private final IBoardCmtService boardCmtService;
 
     @GetMapping("")
-    public ResponseEntity<PageDto<BoardDto.Response>> findAll(@RequestParam  int page) {
+    public ResponseEntity<PageDto<BoardDto.Response>> findAll(
+            @RequestParam
+            @Min(value = 1)
+            int page
+    ) {
         return ResponseEntity.ok(boardService.getBoards(page));
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<BoardDto.Response> findOne(@PathVariable String boardId) {
-        return ResponseEntity.ok(boardService.getBoardById(boardId));
+    public ResponseEntity<BoardDto.Response> findOne(
+            @PathVariable
+            String boardId
+    ) {
+        return ResponseEntity.ok(boardService.getBoardById(UUID.fromString(boardId)));
     }
 
     @PostMapping("")
-    public ResponseEntity<String> save(@RequestBody @Valid BoardDto.Create request, @AuthenticationPrincipal UserPrincipal user) {
+    public ResponseEntity<String> save(
+            @RequestBody
+            @Valid
+            BoardDto.Create request,
+            @AuthenticationPrincipal
+            UserPrincipal user
+    ) {
         boardService.save(request,user);
         return ResponseEntity.ok("Saved");
     }
 
     @PutMapping("")
     public ResponseEntity<String> update(
-            @RequestBody @Valid BoardDto.Update request,
-            @AuthenticationPrincipal UserPrincipal user) {
+            @RequestBody
+            @Valid
+            BoardDto.Update request,
+            @AuthenticationPrincipal
+            UserPrincipal user
+    ) {
 
         boardService.update(request, user);
         return ResponseEntity.ok("Updated");
@@ -50,24 +66,33 @@ public class BoardController {
 
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> delete(
-            @PathVariable UUID boardId,
-            @AuthenticationPrincipal UserPrincipal user) {
+            @PathVariable
+            UUID boardId,
+            @AuthenticationPrincipal
+            UserPrincipal user
+    ) {
         boardService.delete(boardId, user);
         return ResponseEntity.ok("Deleted");
     }
 
     @GetMapping("/comment")
     public ResponseEntity<List<BoardCmtDto.Response>> findBoardComments(
-            @RequestParam int page,
-            @RequestParam UUID boardId
+            @RequestParam
+            @Min(value = 1)
+            int page,
+            @RequestParam
+            UUID boardId
     ) {
         return ResponseEntity.ok(boardCmtService.findBoardComments(page, boardId));
     }
 
     @PostMapping("/comment")
     public ResponseEntity<String> createBoardComment(
-            @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestBody@Valid BoardCmtDto.Create request
+            @AuthenticationPrincipal
+            UserPrincipal userPrincipal,
+            @RequestBody
+            @Valid
+            BoardCmtDto.Create request
     ) {
         boardCmtService.insert(request,userPrincipal);
         return ResponseEntity.ok("Created");
