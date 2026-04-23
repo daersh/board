@@ -1,7 +1,6 @@
 package com.zizonhyunwoo.board.service;
 
 import com.zizonhyunwoo.board.config.UserPrincipal;
-import com.zizonhyunwoo.board.dao.BoardCmtRepository;
 import com.zizonhyunwoo.board.dao.BoardRepository;
 import com.zizonhyunwoo.board.dao.UserRepository;
 import com.zizonhyunwoo.board.dto.BoardDto;
