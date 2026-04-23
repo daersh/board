@@ -41,9 +41,8 @@ public class BoardCmtService implements IBoardCmtService {
     public List<BoardCmtDto.Response> findBoardComments(int page, UUID boardId) {
 
         Pageable pageable = PageRequest.of(page-1, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
-        List<BoardCmtDto.Response> list = boardCmtRepository.findAllByBoard_Id(boardId, pageable).stream()
+        return boardCmtRepository.findAllByBoard_Id(boardId, pageable).stream()
                 .map(BoardCmtDto.Response::new).toList();
-        return list;
     }
 
 

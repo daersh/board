@@ -24,7 +24,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BoardService implements IBoardService {
     private final BoardRepository boardRepository;
-    private final BoardCmtRepository boardCmtRepository;
     private final UserRepository userRepository;
 
     public PageDto<BoardDto.Response> getBoards(int page){
