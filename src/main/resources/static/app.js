@@ -176,7 +176,7 @@ const handleIndexPage = async () => {
     }
 
     // Fetch and render board posts
-    const fetchPosts = async (page = 0, size = 10) => {
+    const fetchPosts = async (page = 1, size = 10) => {
         try {
             const response = await fetchWithAuth(`${API_BASE_URL}/board?page=${page}&size=${size}`);
             if (!response || !response.ok) {
@@ -218,7 +218,7 @@ const handleIndexPage = async () => {
             const button = document.createElement('button');
             button.textContent = i + 1;
             button.className = (i === currentPage) ? 'active' : '';
-            button.addEventListener('click', () => fetchFn(i));
+            button.addEventListener('click', () => fetchFn(i+1));
             paginationDiv.appendChild(button);
         }
     };

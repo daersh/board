@@ -47,6 +47,7 @@ public class BoardDto {
         LocalDateTime modifiedAt;
         String nickname;
         List<BoardCmtDto.Response> boardCmtDtos;
+        Integer commentCount;
 
         public Response(BoardEntity board) {
             this.id = board.getId();
@@ -56,7 +57,8 @@ public class BoardDto {
             this.createdAt = board.getCreatedAt();
             this.modifiedAt = board.getModifiedAt();
             this.nickname = board.getUser().getNickname();
-            this.boardCmtDtos = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
+//            this.boardCmtDtos = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
+            this.commentCount = board.getCommentCount();
         }
     }
 }
