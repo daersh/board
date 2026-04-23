@@ -1,9 +1,9 @@
 package com.zizonhyunwoo.board.api;
 
 import com.zizonhyunwoo.board.config.UserPrincipal;
+import com.zizonhyunwoo.board.dto.UserDto;
 import com.zizonhyunwoo.board.model.UserEntity;
-import com.zizonhyunwoo.board.request.UserRequest;
-import com.zizonhyunwoo.board.response.PageResponse;
+import com.zizonhyunwoo.board.dto.PageDto;
 import com.zizonhyunwoo.board.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("")
-    public PageResponse<UserEntity> findAll(@RequestParam int page) {
+    public PageDto<UserEntity> findAll(@RequestParam int page) {
 
         return userService.findAll(page);
     }
@@ -32,7 +32,7 @@ public class UserController {
 
     @PostMapping("")
     @Transactional
-    public UserEntity save(@RequestBody@Valid UserRequest.Create request) throws BadRequestException {
+    public UserEntity save(@RequestBody@Valid UserDto.Create request) throws BadRequestException {
         return userService.save(request);
     }
 

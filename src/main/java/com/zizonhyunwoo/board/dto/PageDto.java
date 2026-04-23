@@ -1,4 +1,4 @@
-package com.zizonhyunwoo.board.response;
+package com.zizonhyunwoo.board.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PageResponse<T> {
+public class PageDto<T> {
     private List<T> content;
     private int pageNumber;
     private int pageSize;
@@ -20,8 +20,8 @@ public class PageResponse<T> {
     private int totalPages;
     private boolean isLast;
 
-    public static <T> PageResponse<T> of(Page<T> page) {
-        return PageResponse.<T>builder()
+    public static <T> PageDto<T> of(Page<T> page) {
+        return PageDto.<T>builder()
                 .content(page.getContent())
                 .pageNumber(page.getNumber())
                 .pageSize(page.getSize())

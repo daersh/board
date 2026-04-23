@@ -1,12 +1,11 @@
-package com.zizonhyunwoo.board.request;
+package com.zizonhyunwoo.board.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class UserRequest {
-
+public class UserDto {
     @Getter
     @NoArgsConstructor()
     @AllArgsConstructor()

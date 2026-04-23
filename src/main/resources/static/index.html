@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>게시판</h1>
+            <nav id="nav-bar">
+                <!-- 로그인 상태에 따라 동적으로 변경됩니다 -->
+            </nav>
+        </header>
+        <main>
+            <table class="board-table">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                    </tr>
+                </thead>
+                <tbody id="board-list">
+                    <!-- API로부터 받아온 데이터가 여기에 채워집니다 -->
+                </tbody>
+            </table>
+            <div id="pagination" class="pagination">
+                <!-- 페이지네이션 버튼이 여기에 채워집니다 -->
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

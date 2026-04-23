@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/index.html" class="btn">목록으로</a>
+        </header>
+        <main>
+            <div id="post-detail">
+                <!-- 게시글 상세 정보가 여기에 채워집니다 -->
+            </div>
+            <div id="post-actions">
+                <!-- 작성자일 경우 수정/삭제 버튼이 여기에 추가됩니다 -->
+            </div>
+
+            <hr>
+
+            <div class="comment-section">
+                <h3>댓글</h3>
+                <div id="comment-list">
+                    <!-- 댓글 목록이 여기에 채워집니다 -->
+                </div>
+                <form id="comment-form">
+                    <div class="form-group">
+                        <textarea id="comment-content" placeholder="댓글을 입력하세요..."></textarea>
+                    </div>
+                    <button type="submit" class="btn">댓글 작성</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>로그인</h1>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="text" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn">로그인</button>
+        </form>
+        <div class="message"></div>
+        <p>계정이 없으신가요? <a href="/register.html">회원가입</a></p>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
