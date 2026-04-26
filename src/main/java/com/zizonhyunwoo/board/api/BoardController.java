@@ -32,7 +32,7 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<BoardDto.Response> findOne(
+    public ResponseEntity<BoardDto.ResponseDetail> findOne(
             @PathVariable
             String boardId
     ) {

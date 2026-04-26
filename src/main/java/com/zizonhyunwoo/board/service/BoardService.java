@@ -50,8 +50,8 @@ public class BoardService implements IBoardService {
     }
 
     @Override
-    public BoardDto.Response getBoardById(UUID boardId) {
-        return new BoardDto.Response(boardRepository.findById(boardId).orElseThrow(()-> new BoardException("게시글을 찾을 수 없음")));
+    public BoardDto.ResponseDetail getBoardById(UUID boardId) {
+        return new BoardDto.ResponseDetail(boardRepository.findById(boardId).orElseThrow(()-> new BoardException("게시글을 찾을 수 없음")));
     }
 
     @Override

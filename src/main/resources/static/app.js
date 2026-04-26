@@ -191,10 +191,9 @@ const handleIndexPage = async () => {
                 posts.forEach(post => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${post.id}</td>
                         <td><a href="/detail.html?id=${post.id}">${post.title}</a></td>
                         <td>${post.nickname}</td>
-                        <td>${new Date(post.createdAt).toLocaleDateString()}</td>
+                        <td>${new Date(post.modifiedAt).toLocaleDateString()}</td>
                     `;
                     boardList.appendChild(row);
                 });

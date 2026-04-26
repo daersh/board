@@ -41,24 +41,40 @@ public class BoardDto {
     public static class Response{
         UUID id;
         String title;
-        String content;
-        int status;
-        LocalDateTime createdAt;
         LocalDateTime modifiedAt;
         String nickname;
-        List<BoardCmtDto.Response> boardCmtDtos;
         Integer commentCount;
 
         public Response(BoardEntity board) {
             this.id = board.getId();
             this.title = board.getTitle();
-            this.content = board.getContent();
-            this.status = board.getStatus();
-            this.createdAt = board.getCreatedAt();
             this.modifiedAt = board.getModifiedAt();
             this.nickname = board.getUser().getNickname();
-//            this.boardCmtDtos = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
             this.commentCount = board.getCommentCount();
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ResponseDetail {
+        UUID id;
+        String title;
+        String content;
+        LocalDateTime modifiedAt;
+        String nickname;
+        List<BoardCmtDto.Response> cmts;
+        public ResponseDetail(BoardEntity board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.modifiedAt = board.getModifiedAt();
+            this.nickname = board.getUser().getNickname();
+            this.cmts = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
+        }
+    }
+
+
+
+
 }
