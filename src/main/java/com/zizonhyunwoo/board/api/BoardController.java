@@ -68,7 +68,7 @@ public class BoardController {
         return ResponseEntity.ok("Updated");
     }
 
-    // 게시글 삭제
+// 게시판 삭제 
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> delete(
             @PathVariable
