@@ -32,6 +32,7 @@ public class BoardCmtDto {
     public static class Update {
         @NotNull
         private UUID commentId;
+        @NotBlank
         private String content;
     }
 

@@ -52,7 +52,11 @@ public class BoardCmtService implements IBoardCmtService {
     @Override
     @Transactional
     public void update(BoardCmtDto.Update request, UserPrincipal userPrincipal) {
-        BoardCmtEntity comment = boardCmtRepository.findById(request.getCommentId()).orElseThrow(()->new BoardException(""));
+        BoardCmtEntity comment = boardCmtRepository
+                .findById(request.getCommentId())
+                .orElseThrow(()->new BoardException("존재하지 않는 댓글"));
+        if(!comment.getUser().getId().equals(userPrincipal.getUserId()))
+            throw new BoardException("댓글 수정 권한 없는 사용자");
         comment.update(request);
         log.debug("comment={}", comment);
     }

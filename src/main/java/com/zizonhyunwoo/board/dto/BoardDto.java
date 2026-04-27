@@ -36,6 +36,7 @@ public class BoardDto {
         private String content;
     }
 
+    // 리스트 출력 용도
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
