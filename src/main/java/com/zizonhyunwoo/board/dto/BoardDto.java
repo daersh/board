@@ -23,6 +23,7 @@ public class BoardDto {
         @NotBlank
         private String content;
     }
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
@@ -63,14 +64,14 @@ public class BoardDto {
         String content;
         LocalDateTime modifiedAt;
         String nickname;
-        List<BoardCmtDto.Response> cmts;
+        List<BoardCmtDto.Response> comments;
         public ResponseDetail(BoardEntity board) {
             this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();
             this.modifiedAt = board.getModifiedAt();
             this.nickname = board.getUser().getNickname();
-            this.cmts = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
+            this.comments = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
         }
     }
 

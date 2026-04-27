@@ -5,10 +5,12 @@ import com.zizonhyunwoo.board.dao.BoardCmtRepository;
 import com.zizonhyunwoo.board.dao.BoardRepository;
 import com.zizonhyunwoo.board.dao.UserRepository;
 import com.zizonhyunwoo.board.dto.BoardCmtDto;
+import com.zizonhyunwoo.board.exception.BoardException;
 import com.zizonhyunwoo.board.model.BoardCmtEntity;
 import com.zizonhyunwoo.board.model.BoardEntity;
 import com.zizonhyunwoo.board.model.UserEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BoardCmtService implements IBoardCmtService {
@@ -25,6 +28,7 @@ public class BoardCmtService implements IBoardCmtService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    @Override
     @Transactional
     public void insert(BoardCmtDto.Create create, UserPrincipal userPrincipal) {
 
@@ -43,6 +47,14 @@ public class BoardCmtService implements IBoardCmtService {
         Pageable pageable = PageRequest.of(page-1, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
         return boardCmtRepository.findAllByBoard_Id(boardId, pageable).stream()
                 .map(BoardCmtDto.Response::new).toList();
+    }
+
+    @Override
+    @Transactional
+    public void update(BoardCmtDto.Update request, UserPrincipal userPrincipal) {
+        BoardCmtEntity comment = boardCmtRepository.findById(request.getCommentId()).orElseThrow(()->new BoardException(""));
+        comment.update(request);
+        log.debug("comment={}", comment);
     }
 
 

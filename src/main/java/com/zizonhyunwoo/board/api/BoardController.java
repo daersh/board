@@ -22,6 +22,7 @@ public class BoardController {
     private final IBoardService boardService;
     private final IBoardCmtService boardCmtService;
 
+    // 게시글 리스트 불러오기
     @GetMapping("")
     public ResponseEntity<PageDto<BoardDto.Response>> findAll(
             @RequestParam
@@ -31,6 +32,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoards(page));
     }
 
+    // 게시글 상세 조회
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardDto.ResponseDetail> findOne(
             @PathVariable
@@ -39,6 +41,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardById(UUID.fromString(boardId)));
     }
 
+    // 게시글 저장
     @PostMapping("")
     public ResponseEntity<String> save(
             @RequestBody
@@ -51,6 +54,7 @@ public class BoardController {
         return ResponseEntity.ok("Saved");
     }
 
+    // 게시글 수정
     @PutMapping("")
     public ResponseEntity<String> update(
             @RequestBody
@@ -64,6 +68,7 @@ public class BoardController {
         return ResponseEntity.ok("Updated");
     }
 
+    // 게시글 삭제
     @DeleteMapping("/{boardId}")
     public ResponseEntity<String> delete(
             @PathVariable
@@ -75,6 +80,7 @@ public class BoardController {
         return ResponseEntity.ok("Deleted");
     }
 
+    // 게시글 댓글 조회
     @GetMapping("/comment")
     public ResponseEntity<List<BoardCmtDto.Response>> findBoardComments(
             @RequestParam
@@ -86,6 +92,7 @@ public class BoardController {
         return ResponseEntity.ok(boardCmtService.findBoardComments(page, boardId));
     }
 
+    // 게시글 생성
     @PostMapping("/comment")
     public ResponseEntity<String> createBoardComment(
             @AuthenticationPrincipal
@@ -96,6 +103,18 @@ public class BoardController {
     ) {
         boardCmtService.insert(request,userPrincipal);
         return ResponseEntity.ok("Created");
+    }
+
+    @PutMapping("/comment")
+    public ResponseEntity<String> updateBoardComment(
+            @AuthenticationPrincipal
+            UserPrincipal userPrincipal,
+            @RequestBody
+            @Valid
+            BoardCmtDto.Update request
+    ){
+        boardCmtService.update(request, userPrincipal);
+        return ResponseEntity.ok("Updated");
     }
 
 }
