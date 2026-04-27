@@ -2,6 +2,7 @@ package com.zizonhyunwoo.board.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +33,9 @@ public class BoardEntity extends TimeEntity {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     private List<BoardCmtEntity> comments;
+
+    @Formula("(select count(1) from board_comment c where c.board_id = id)")
+    private int commentCount;
 
     public void update(String title, String content) {
         this.title = title;

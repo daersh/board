@@ -12,7 +12,7 @@ public interface IBoardService {
 
     void save(BoardDto.Create request, UserPrincipal user);
 
-    BoardDto.Response getBoardById(UUID boardId);
+    BoardDto.ResponseDetail getBoardById(UUID boardId);
 
     void update(BoardDto.Update request, UserPrincipal user);
 

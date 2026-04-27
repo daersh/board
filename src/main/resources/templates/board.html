@@ -145,7 +145,7 @@
 </div>
 
 <script>
-    let currentPage = 0;
+    let currentPage = 1;
 
     function loadBoards(page) {
         fetch(`/api/board?page=${page}`)
@@ -184,7 +184,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => loadBoards(0));
+    document.addEventListener('DOMContentLoaded', () => loadBoards(1));
 </script>
 </body>
 </html>

@@ -29,6 +29,16 @@ public class BoardCmtDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class Update {
+        @NotNull
+        private UUID commentId;
+        @NotBlank
+        private String content;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
         private UUID commentId;
         private String content;
@@ -47,4 +57,5 @@ public class BoardCmtDto {
         }
 
     }
+
 }

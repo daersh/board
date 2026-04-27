@@ -23,6 +23,7 @@ public class BoardDto {
         @NotBlank
         private String content;
     }
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
@@ -35,28 +36,47 @@ public class BoardDto {
         private String content;
     }
 
+    // 리스트 출력 용도
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response{
         UUID id;
         String title;
-        String content;
-        int status;
-        LocalDateTime createdAt;
         LocalDateTime modifiedAt;
         String nickname;
-        List<BoardCmtDto.Response> boardCmtDtos;
+        Integer commentCount;
 
         public Response(BoardEntity board) {
             this.id = board.getId();
             this.title = board.getTitle();
-            this.content = board.getContent();
-            this.status = board.getStatus();
-            this.createdAt = board.getCreatedAt();
             this.modifiedAt = board.getModifiedAt();
             this.nickname = board.getUser().getNickname();
-            this.boardCmtDtos = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
+            this.commentCount = board.getCommentCount();
         }
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ResponseDetail {
+        UUID id;
+        String title;
+        String content;
+        LocalDateTime modifiedAt;
+        String nickname;
+        List<BoardCmtDto.Response> comments;
+        public ResponseDetail(BoardEntity board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.modifiedAt = board.getModifiedAt();
+            this.nickname = board.getUser().getNickname();
+            this.comments = board.getComments().stream().map(BoardCmtDto.Response::new).toList();
+        }
+    }
+
+
+
+
 }

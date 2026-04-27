@@ -10,4 +10,6 @@ public interface IBoardCmtService {
     void insert(BoardCmtDto.Create create, UserPrincipal userPrincipal) ;
 
     List<BoardCmtDto.Response> findBoardComments(int page, UUID boardId);
+
+    void update(BoardCmtDto.Update request, UserPrincipal userPrincipal);
 }

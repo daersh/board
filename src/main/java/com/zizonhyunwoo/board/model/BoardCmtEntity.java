@@ -2,10 +2,7 @@ package com.zizonhyunwoo.board.model;
 
 import com.zizonhyunwoo.board.dto.BoardCmtDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Table(name = "board_comment")
+@ToString
 public class BoardCmtEntity extends TimeEntity {
 
     @Id
@@ -55,4 +53,7 @@ public class BoardCmtEntity extends TimeEntity {
         this.board = board;
     }
 
+    public void update(BoardCmtDto.Update request) {
+        this.content = request.getContent();
+    }
 }

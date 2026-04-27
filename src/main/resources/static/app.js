@@ -176,7 +176,7 @@ const handleIndexPage = async () => {
     }
 
     // Fetch and render board posts
-    const fetchPosts = async (page = 0, size = 10) => {
+    const fetchPosts = async (page = 1, size = 10) => {
         try {
             const response = await fetchWithAuth(`${API_BASE_URL}/board?page=${page}&size=${size}`);
             if (!response || !response.ok) {
@@ -191,10 +191,9 @@ const handleIndexPage = async () => {
                 posts.forEach(post => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${post.id}</td>
-                        <td><a href="/detail.html?id=${post.id}">${post.title}</a></td>
+                        <td><a href="/detail.html?id=${post.id}">${post.title}</a> [${post.commentCount}]</td>
                         <td>${post.nickname}</td>
-                        <td>${new Date(post.createdAt).toLocaleDateString()}</td>
+                        <td>${new Date(post.modifiedAt).toLocaleDateString()}</td>
                     `;
                     boardList.appendChild(row);
                 });
@@ -218,7 +217,7 @@ const handleIndexPage = async () => {
             const button = document.createElement('button');
             button.textContent = i + 1;
             button.className = (i === currentPage) ? 'active' : '';
-            button.addEventListener('click', () => fetchFn(i));
+            button.addEventListener('click', () => fetchFn(i+1));
             paginationDiv.appendChild(button);
         }
     };
@@ -252,6 +251,7 @@ const handleDetailPage = async () => {
             }
             const post = await response.json();
             renderPost(post);
+            renderComment(post.comments);
             return post;
         } catch (error) {
             console.error('Error fetching post:', error);
@@ -280,6 +280,23 @@ const handleDetailPage = async () => {
         }
     };
 
+    const renderComment = (comments) => {
+        commentListDiv.innerHTML = '';
+        if (comments && comments.length > 0) {
+            comments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.innerHTML = `
+                        <p class="comment-meta">작성자: ${comment.nickname} | 작성일: ${new Date(comment.createdAt).toLocaleString()}</p>
+                        <p class="comment-content">${comment.content}</p>
+                    `;
+                commentListDiv.appendChild(commentDiv);
+            });
+        } else {
+            commentListDiv.innerHTML = '<p>댓글이 없습니다.</p>';
+        }
+    }
+
     // Handle post deletion
     const handleDeletePost = async () => {
         if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
@@ -299,36 +316,6 @@ const handleDetailPage = async () => {
         } catch (error) {
             console.error('Error deleting post:', error);
             alert(`네트워크 오류: ${error.message}`);
-        }
-    };
-
-    // Fetch and render comments
-    const fetchComments = async () => {
-        try {
-            // Corrected endpoint and parameters
-            const response = await fetchWithAuth(`${API_BASE_URL}/board/comment?boardId=${boardId}&page=0`); // Assuming page 0 for comments
-            if (!response || !response.ok) {
-                commentListDiv.innerHTML = '<p>댓글을 불러오는데 실패했습니다.</p>';
-                return;
-            }
-            const comments = await response.json();
-            commentListDiv.innerHTML = ''; // Clear existing comments
-            if (comments && comments.length > 0) {
-                comments.forEach(comment => {
-                    const commentDiv = document.createElement('div');
-                    commentDiv.className = 'comment';
-                    commentDiv.innerHTML = `
-                        <p class="comment-meta">작성자: ${comment.nickname} | 작성일: ${new Date(comment.createdAt).toLocaleString()}</p>
-                        <p class="comment-content">${comment.content}</p>
-                    `;
-                    commentListDiv.appendChild(commentDiv);
-                });
-            } else {
-                commentListDiv.innerHTML = '<p>댓글이 없습니다.</p>';
-            }
-        } catch (error) {
-            console.error('Error fetching comments:', error);
-            commentListDiv.innerHTML = '<p>댓글을 불러오는 중 오류가 발생했습니다.</p>';
         }
     };
 
@@ -373,7 +360,6 @@ const handleDetailPage = async () => {
 
     // Initial load
     await fetchPost();
-    await fetchComments();
 };
 
 // Write Page Logic

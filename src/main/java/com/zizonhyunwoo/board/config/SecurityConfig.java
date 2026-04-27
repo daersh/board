@@ -26,20 +26,19 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/index", "/login", "/api/login/**", "/static/**", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/api/user/info").authenticated()
-                        .requestMatchers("/api/board/**").authenticated()
-                        .anyRequest().permitAll()
-                )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+            .csrf(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/", "/index", "/login", "/api/login/**", "/static/**", "/css/**", "/js/**").permitAll()
+                    .requestMatchers("/api/user/info").authenticated()
+                    .requestMatchers("/api/board/**").authenticated()
+                    .anyRequest().permitAll()
+            )
+            .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
