@@ -2,7 +2,6 @@ package com.zizonhyunwoo.board.service;
 
 import com.zizonhyunwoo.board.config.UserPrincipal;
 import com.zizonhyunwoo.board.dto.BoardCmtDto;
-import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
